@@ -21,7 +21,6 @@
     button {
         padding: 12px 24px;
         font-size: 18px;
-        margin: 10px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
@@ -30,13 +29,14 @@
     #yes-button {
         background-color: #ff4d6d;
         color: white;
+        margin-right: 20px;
     }
 
     #no-button {
         background-color: #ccc;
         position: absolute;
         top: 200px;
-        left: 55%;
+        left: 60%;
     }
 
     #penguins {
@@ -63,7 +63,7 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+window.onload = function () {
     const noButton = document.getElementById('no-button');
     const yesButton = document.getElementById('yes-button');
     const penguins = document.getElementById('penguins');
@@ -72,20 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function moveNoButton() {
         const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
         const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
-        noButton.style.left = `${x}px`;
-        noButton.style.top = `${y}px`;
+        noButton.style.left = x + "px";
+        noButton.style.top = y + "px";
     }
 
-    noButton.addEventListener('mouseover', moveNoButton);
-    noButton.addEventListener('touchstart', moveNoButton); // for phones
+    noButton.addEventListener('mouseenter', moveNoButton);
 
-    yesButton.addEventListener('click', () => {
+    yesButton.addEventListener('click', function () {
         question.style.display = 'none';
         yesButton.style.display = 'none';
         noButton.style.display = 'none';
         penguins.style.display = 'block';
     });
-});
+};
 </script>
 
 </body>
