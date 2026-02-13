@@ -25,22 +25,20 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
+        position: absolute;
     }
 
     #yes-button {
         background-color: #ff4d6d;
         color: white;
-        margin-right: 20px;
-        position: relative;
-        z-index: 1;
+        top: 250px;
+        left: 40%;
     }
 
     #no-button {
         background-color: #ccc;
-        position: absolute;
-        top: 200px;
-        left: 60%;
-        z-index: 1;
+        top: 250px;
+        left: 55%;
     }
 
     #penguins {
@@ -74,23 +72,36 @@ window.addEventListener('load', function () {
     const penguins = document.getElementById('penguins');
     const question = document.getElementById('question');
 
-    function moveNoButton() {
-        // Get the visible width/height of the viewport
-        const maxX = window.innerWidth - noButton.offsetWidth;
-        const maxY = window.innerHeight - noButton.offsetHeight;
+    const speed = 15; // How fast the button moves
 
-        // Random position inside the screen
-        const x = Math.floor(Math.random() * maxX);
-        const y = Math.floor(Math.random() * maxY);
+    // Move the No button away from the cursor
+    document.addEventListener('mousemove', function(e) {
+        const rect = noButton.getBoundingClientRect();
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
 
-        noButton.style.left = x + "px";
-        noButton.style.top = y + "px";
-    }
+        // Distance between mouse and button center
+        const dx = mouseX - (rect.left + rect.width / 2);
+        const dy = mouseY - (rect.top + rect.height / 2);
+        const distance = Math.sqrt(dx*dx + dy*dy);
 
-    // Mouse hover moves the No button
-    noButton.addEventListener('mouseenter', moveNoButton);
+        // If mouse is close, move the button
+        if(distance < 100) { 
+            let newX = rect.left - dx / distance * speed;
+            let newY = rect.top - dy / distance * speed;
 
-    // Click Yes shows penguins
+            // Keep button inside viewport
+            const maxX = window.innerWidth - rect.width;
+            const maxY = window.innerHeight - rect.height;
+            newX = Math.min(Math.max(0, newX), maxX);
+            newY = Math.min(Math.max(0, newY), maxY);
+
+            noButton.style.left = newX + "px";
+            noButton.style.top = newY + "px";
+        }
+    });
+
+    // Clicking Yes shows penguins
     yesButton.addEventListener('click', function () {
         question.style.display = 'none';
         yesButton.style.display = 'none';
